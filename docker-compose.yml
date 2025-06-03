@@ -1,0 +1,53 @@
+version: '3.8'
+
+services:
+  db:
+    build:
+      context: ./db
+    container_name: chatapp-db-container
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: chatapp
+      MYSQL_USER: chatappadmin
+      MYSQL_PASSWORD: password
+    volumes:
+      - chat-db-data:/var/lib/mysql
+    networks:
+      - chatapp-network
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: stageDockerfile
+    container_name: chatapp-backend-container
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    environment:
+      DATABASE_NAME: chatapp
+      DATABASE_USER: chatappadmin
+      DATABASE_PASSWORD: password
+      DATABASE_HOST: db
+    networks:
+      - chatapp-network
+
+  frontend:
+    build:
+      context: ./frontend
+    container_name: chatapp-frontend-container
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+    networks:
+      - chatapp-network
+
+volumes:
+  chat-db-data:
+
+networks:
+  chatapp-network:
+    driver: bridge

@@ -1,3 +1,9 @@
+#gloabla arguments
+ARG MYSQL_ROOT_PASSWORD='password'
+ARG MYSQL_DATABASE='chatapp'
+ARG MYSQL_USER='chatappadmin'
+ARG MYSQL_PASSWORD='password'
+
 # Base image
 FROM ubuntu:22.04
 

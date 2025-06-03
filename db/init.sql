@@ -1,4 +1,4 @@
-CREATE USER 'chatappadmin'@'%' IDENTIFIED BY 'password';
-CREATE DATABASE chatapp;
+CREATE DATABASE IF NOT EXISTS chatapp;
+CREATE USER IF NOT EXISTS 'chatappadmin'@'%' IDENTIFIED BY 'password';
 GRANT ALL PRIVILEGES ON chatapp.* TO 'chatappadmin'@'%';
 FLUSH PRIVILEGES;

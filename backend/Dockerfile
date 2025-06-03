@@ -15,6 +15,7 @@ RUN apt-get update && apt-get install -y \
     pkg-config \
     libssl-dev \
     libffi-dev \
+    tzdata \
     && rm -rf /var/lib/apt/lists/*
 
 RUN update-alternatives --install /usr/bin/python python /usr/bin/python3 2
