@@ -23,7 +23,7 @@ RUN update-alternatives --install /usr/bin/python python /usr/bin/python3 2
 
 WORKDIR /chatapp
 
-RUN git clone https://github.com/Aryankumar25/chatapp-cloud /chatapp
+RUN git clone https://github.com/HimanshuYadav200/chatapp-cloud.git /chatapp
 
 WORKDIR /chatapp
 

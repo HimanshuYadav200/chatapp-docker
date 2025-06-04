@@ -4,7 +4,7 @@ services:
   db:
     build:
       context: ./db
-    container_name: chatapp-db-container
+    container_name: chat-db-container
     ports:
       - "3306:3306"
     environment:
@@ -16,16 +16,25 @@ services:
       - chat-db-data:/var/lib/mysql
     networks:
       - chatapp-network
+    mem_limit: 2g
+
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h localhost -p$${MYSQL_ROOT_PASSWORD}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
 
   backend:
     build:
       context: ./backend
       dockerfile: stageDockerfile
-    container_name: chatapp-backend-container
+    container_name: chat-backend
     ports:
       - "8000:8000"
     depends_on:
-      - db
+      db:
+        condition: service_healthy
     environment:
       DATABASE_NAME: chatapp
       DATABASE_USER: chatappadmin
@@ -33,17 +42,27 @@ services:
       DATABASE_HOST: db
     networks:
       - chatapp-network
+    mem_limit: 2g
+
+    healthcheck:
+      test: ["CMD-SHELL", "curl  http://localhost:8000"]
+      interval: 10s      
+      timeout: 5s          
+      retries: 5           
+      start_period: 120s    
 
   frontend:
     build:
       context: ./frontend
-    container_name: chatapp-frontend-container
+    container_name: chat-frontend-container
     ports:
       - "80:80"
     depends_on:
-      - backend
+      backend:
+        condition: service_healthy
     networks:
       - chatapp-network
+    mem_limit: 2g
 
 volumes:
   chat-db-data:

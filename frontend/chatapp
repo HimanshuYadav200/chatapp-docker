@@ -4,6 +4,6 @@ server {
 
     location / {
 	include /etc/nginx/proxy_params;
-        proxy_pass http://chatapp-backend-container:8000;
+        proxy_pass http://chat-backend:8000;
     }
 }
